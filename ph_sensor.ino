@@ -10,15 +10,30 @@ void ph_sensor(void)
       if(pHArrayIndex==ArrayLenth)pHArrayIndex=0;
       voltage = avergearray(pHArray, ArrayLenth)*5.0/1024+0.05;
       pHValue = 3.5*voltage+Offset;
+      ph_cpy=pHValue;
       samplingTime=millis();
   }
   if(millis() - printTime > printInterval)   //Every 800 milliseconds, print a numerical, convert the state of the LED indicator
   {
-  Serial.print("Voltage:");
-        Serial.print(voltage,2);
-        Serial.print("    pH value: ");
-  Serial.println(pHValue,2);
-        digitalWrite(LED,digitalRead(LED)^1);
+//  Serial.print("Voltage:");
+//        Serial.print(voltage,2);
+//        Serial.print("    pH value: ");
+//  Serial.println(pHValue,2);
+  
+  //menampilkan data di lcd
+  display.clearDisplay();
+  display.setTextSize(2);   
+  display.setCursor(0,0);  
+  display.println("PH:");
+  display.setCursor(35,0);  
+  display.println(pHValue,1);
+  if (state==2 && sub_state==1) {//pass
+                                }
+  else {perintah_ambil_sampling();
+        menu();}
+  display.display();
+  
+        //digitalWrite(LED,digitalRead(LED)^1);
         printTime=millis();
   }
 }
